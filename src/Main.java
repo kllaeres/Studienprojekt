@@ -71,8 +71,8 @@ public class Main {
                 System.out.println(clientType);
                 ServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), "type");
             }else{
-                System.out.println("Wrong message input");
-                System.exit(-1);
+                System.out.println("Wrong message type");
+                ServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), "disconnect/.../wrong_message_type");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,38 +120,42 @@ public class Main {
 
                 getClientType(s);
 
-                if(clientType.equals("WebSocket")) {
-                    InputStream in = s.getInputStream();
-                    OutputStream out = s.getOutputStream();
-                    Scanner scan = new Scanner(in, StandardCharsets.UTF_8);
-                    //WebSocket Handshake
-                    try {
-                        String data = scan.useDelimiter("\\r\\n\\r\\n").next();
-                        Matcher get = Pattern.compile("^GET").matcher(data);
-                        if (get.find()) {
-                            Matcher match = Pattern.compile("Sec-WebSocket-Key: (.*)").matcher(data);
-                            match.find();
-                            byte[] response = ("HTTP/1.1 101 Switching Protocols\r\n"
-                                    + "Connection: Upgrade\r\n"
-                                    + "Upgrade: websocket\r\n"
-                                    + "Sec-WebSocket-Accept: "
-                                    + Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-1").digest((match.group(1) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes(StandardCharsets.UTF_8)))
-                                    + "\r\n\r\n").getBytes(StandardCharsets.UTF_8);
-                            out.write(response, 0, response.length);
+                if(clientType != null) {
+                    if (clientType.equals("WebSocket")) {
+                        InputStream in = s.getInputStream();
+                        OutputStream out = s.getOutputStream();
+                        Scanner scan = new Scanner(in, StandardCharsets.UTF_8);
+                        //WebSocket Handshake
+                        try {
+                            String data = scan.useDelimiter("\\r\\n\\r\\n").next();
+                            Matcher get = Pattern.compile("^GET").matcher(data);
+                            if (get.find()) {
+                                Matcher match = Pattern.compile("Sec-WebSocket-Key: (.*)").matcher(data);
+                                match.find();
+                                byte[] response = ("HTTP/1.1 101 Switching Protocols\r\n"
+                                        + "Connection: Upgrade\r\n"
+                                        + "Upgrade: websocket\r\n"
+                                        + "Sec-WebSocket-Accept: "
+                                        + Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-1").digest((match.group(1) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes(StandardCharsets.UTF_8)))
+                                        + "\r\n\r\n").getBytes(StandardCharsets.UTF_8);
+                                out.write(response, 0, response.length);
+                            }
+                        } catch (NoSuchAlgorithmException nsae) {
+                            nsae.printStackTrace();
                         }
-                    } catch (NoSuchAlgorithmException nsae) {
-                        nsae.printStackTrace();
                     }
+
+                    String ip = s.getInetAddress().getHostAddress();
+                    Thread serverThread = new Thread(new ServerThread(s, ip));
+                    serverThread.start();
+
+                    /*/sendCheck
+                    if(ServerThread.listSocket.size() == 1){
+                        new Thread(Main::sendCheck).start();
+                    }//*/
+                }else{
+                    System.out.println("clientType == null");
                 }
-
-                String ip = s.getInetAddress().getHostAddress();
-                Thread serverThread = new Thread (new ServerThread(s, ip));
-                serverThread.start();
-
-                /*/sendCheck
-                if(ServerThread.listSocket.size() == 1){
-                    new Thread(Main::sendCheck).start();
-                }//*/
             }catch(IOException ioe) {
                 check = false;
                 ioe.printStackTrace();

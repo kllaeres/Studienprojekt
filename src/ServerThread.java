@@ -156,7 +156,7 @@ public class ServerThread extends JFrame implements Runnable{
                 if (line != null) {
                     bytes = line.split("/.../");
 
-                    //System.out.println("in if : " + line);
+                    System.out.println("in if : " + line);
 
                     if (bytes[0].equals("connect")) {
                         sendMessage(os, "connect response from the server");
@@ -208,6 +208,9 @@ public class ServerThread extends JFrame implements Runnable{
                     }
 
                     if (bytes[0].equals("pause")){
+                        /*for(Socket socket : listRunning){
+                            sendMessage(new PrintWriter(socket.getOutputStream()), "pauseChange");
+                        }//*/
                         runningClients--;
                         listRunning.remove(socket);
                         sendMessage(os, "pause");
@@ -217,6 +220,9 @@ public class ServerThread extends JFrame implements Runnable{
                         runningClients++;
                         listRunning.add(socket);
                         sendMessage(os, "resume");
+                        /*for(Socket socket : listRunning){
+                            sendMessage(new PrintWriter(socket.getOutputStream()), "resumeChange");
+                        }//*/
                     }
 
                     if (bytes[0].equals("close")) {

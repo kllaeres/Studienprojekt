@@ -100,12 +100,15 @@ public class UI extends JFrame{
             zoomX *= (1 + factor);
             zoomY *= (1 + factor);
 
-            xMove += xMove*factor;
-            yMove += yMove*factor;
-            plotValRe();//*/
+            xMove += xMove * factor;
+            yMove += yMove * factor;
+
+            plotValRe();
 
             /*if(!rectangle) {
                 ServerThread.sendMessageText("zoomIn/.../" + factor);
+            }else{
+                ServerThread.sendMessageText("rectangle/.../" + xMove + "/.../" + yMove + "/.../" + factor);
             }//*/
         //}
     }
@@ -119,9 +122,10 @@ public class UI extends JFrame{
             zoomX *= (1 - factor);
             zoomY *= (1 - factor);
 
-            xMove -= xMove*factor;
-            yMove -= yMove*factor;
-            plotValRe();//*/
+            xMove -= xMove * factor;
+            yMove -= yMove * factor;
+
+            plotValRe();
 
             //ServerThread.sendMessageText("zoomOut/.../" + factor);
         //}
@@ -418,7 +422,6 @@ public class UI extends JFrame{
                         double factor = I.getWidth()/(widthRect*1.0);
                         //double factor = 0.5;
                         zoomIn(factor);
-                        //plotValRe();
                         //ServerThread.sendMessageText("rectangle/.../" + xMove + "/.../" + yMove + "/.../" + factor);
                         startX = 0;
                         startY = 0;
@@ -432,8 +435,8 @@ public class UI extends JFrame{
             }
 
             /**
-             * bricht Hereinzoomen in einen bestimmten Bereich ab
-             * mit rechtem Mausklick
+             * bricht mit rechtem Mausklick das Hereinzoomen in einen
+             * bestimmten Bereich ab
              * @param e MouseEvent
              */
             @Override
