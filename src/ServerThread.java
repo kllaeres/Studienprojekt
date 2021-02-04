@@ -6,14 +6,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class ServerThread extends JFrame implements Runnable{
-    private static BufferedReader is = null;
+    private static BufferedReader br = null;
     private static PrintWriter os = null;
-    private static InputStream iss = null;
-    static Socket socket;
+    private static InputStream is = null;
+    private static Socket socket;
 
     private static boolean check;
-    public static int anzClients;
-    public static int runningClients;
+    private static int anzClients;
+    private static int runningClients;
     private static int yourNumber;
 
     /**
@@ -54,6 +54,7 @@ public class ServerThread extends JFrame implements Runnable{
 
     /**
      * sendMessageText()
+     * in UI.java benoetigt
      * @param text String
      */
     public static void sendMessageText(String text){
@@ -92,8 +93,8 @@ public class ServerThread extends JFrame implements Runnable{
      */
     private synchronized void receiveMessage(){
         try {
-            is = new BufferedReader((new InputStreamReader(socket.getInputStream())));
-            iss = socket.getInputStream();
+            br = new BufferedReader((new InputStreamReader(socket.getInputStream())));
+            is = socket.getInputStream();
             os = new PrintWriter(socket.getOutputStream());
         } catch (Exception e) {
             System.out.println("Error in serverThread");
@@ -107,7 +108,7 @@ public class ServerThread extends JFrame implements Runnable{
             while (check && !Thread.currentThread().isInterrupted()) {
                 if(Main.clientType.equals("WebSocket")) {
                     //Laenge der erhaltenen verschlüsselten Nachricht
-                    length = iss.read(b);
+                    length = is.read(b);
 
                     //Dekodierung der WebSocket Nachricht
                     if (length != -1) {
@@ -150,8 +151,8 @@ public class ServerThread extends JFrame implements Runnable{
                         b = new byte[buffLength];
                     }
                 }else{
-                    line = is.readLine();
-                }//*/
+                    line = br.readLine();
+                }
 
                 if (line != null) {
                     bytes = line.split("/.../");
@@ -160,12 +161,12 @@ public class ServerThread extends JFrame implements Runnable{
 
                     if (bytes[0].equals("connect")) {
                         sendMessage(os, "connect response from the server");
-                        anzClients++;
-                        yourNumber++;
+                        anzClients = listSocket.size();
+                        yourNumber = listSocket.size();
                         UI.lblAnzClients.setText("anzClients: " + anzClients);
                         System.out.println("anzClients: " + anzClients);
                         if(anzClients == 1) {
-                            UI.I = new BufferedImage(UI.imgPicture.getWidth(), UI.imgPicture.getHeight(), BufferedImage.TYPE_INT_RGB);
+                            Methods.I = new BufferedImage(UI.imgPicture.getWidth(), UI.imgPicture.getHeight(), BufferedImage.TYPE_INT_RGB);
                             UI.btnRestart.setEnabled(true);
                             UI.btnZoomIn.setEnabled(true);
                             UI.btnZoomOut.setEnabled(true);
@@ -195,7 +196,7 @@ public class ServerThread extends JFrame implements Runnable{
                         int x = Integer.parseInt(bytes[1]);
                         int y = Integer.parseInt(bytes[2]);
                         int itr = Integer.parseInt(bytes[3]);
-                        UI.I.setRGB(x, y, itr | (itr << colorItr));
+                        Methods.I.setRGB(x, y, itr | (itr << colorItr));
                         validate();
                         repaint();
                     }
@@ -303,6 +304,20 @@ public class ServerThread extends JFrame implements Runnable{
             UI.btnDown.setEnabled(false);
             //UI.btnEnd.setEnabled(false);
             i = 0;
+            try {
+                br.close();
+                System.out.println("BufferedReader closed: " + br.toString());
+                is.close();
+                System.out.println("InputStream closed: " + is.toString());
+                os.close();
+                System.out.println("OutputStream closed: " + os.toString());
+                socket.close();
+                System.out.println("Socket closed: " + socket.toString());
+                so.close();
+                System.out.println("Socket closed: " + so.toString());
+            }catch(IOException e){
+                e.printStackTrace();
+            }
         }
         try {
             for (Socket socket : listSocket) {
@@ -310,14 +325,6 @@ public class ServerThread extends JFrame implements Runnable{
                 sendMessage(os, "close");
                 //System.out.println("Response to Client (" + socket.getInetAddress() + "): " + line);
             }
-            is.close();
-            System.out.println("InputStream closed: " + is.toString());
-            os.close();
-            System.out.println("OutputStream closed: " + os.toString());//*/
-            socket.close();
-            System.out.println("Socket closed: " + socket.toString());
-            so.close();
-            System.out.println("Socket closed: " + so.toString());
         }catch(IOException e){
             e.printStackTrace();
         }
