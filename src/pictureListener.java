@@ -15,7 +15,7 @@ public class pictureListener{
          */
         @Override
         public void mousePressed(MouseEvent e) {
-            Methods.mouseEventPressed(e);
+            MethodsUI.mouseEventPressed(e);
         }
 
         /**
@@ -26,7 +26,7 @@ public class pictureListener{
          */
         @Override
         public void mouseReleased(MouseEvent e) {
-            Methods.mouseEventReleased(e);
+            MethodsUI.mouseEventReleased(e);
         }
 
         /**
@@ -37,7 +37,7 @@ public class pictureListener{
          */
         @Override
         public void mouseClicked(MouseEvent e) {
-            Methods.mouseEventClicked(e);
+            MethodsUI.mouseEventClicked(e);
         }
 
         /**
@@ -73,7 +73,7 @@ public class pictureListener{
          */
         @Override
         public void mouseDragged(MouseEvent e) {
-            Methods.mouseEventDragged(e);
+            MethodsUI.mouseEventDragged(e);
         }
 
         /**

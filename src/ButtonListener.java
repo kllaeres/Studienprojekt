@@ -14,37 +14,41 @@ public class ButtonListener implements ActionListener {
         //if(ServerThread.runningClients > 0) {
             switch (e.getActionCommand()) {
                 case "Up":
-                    Methods.yMove -= 50;
-                    //ServerThread.sendMessageText("Up/.../50");
+                    MethodsUI.yMove -= 50;
+                    /*ServerThread.sendMessageText("Up/.../50");
+                    ServerThreadWebSocket.sendMessageText("Up/.../50");//*/
 
-                    Methods.plotValRe();
+                    MethodsUI.plotValRe();
                     break;
                 case "Down":
-                    Methods.yMove += 50;
-                    //ServerThread.sendMessageText("Down/.../50");
+                    MethodsUI.yMove += 50;
+                    /*ServerThread.sendMessageText("Down/.../50");
+                    ServerThread.sendMessageText("Down/.../50");//*/
 
-                    Methods.plotValRe();
+                    MethodsUI.plotValRe();
                     break;
                 case "Left":
-                    Methods.xMove -= 50;
-                    //ServerThread.sendMessageText("Left/.../50");
+                    MethodsUI.xMove -= 50;
+                    /*ServerThread.sendMessageText("Left/.../50");
+                    ServerThread.sendMessageText("Left/.../50");//*/
 
-                    Methods.plotValRe();
+                    MethodsUI.plotValRe();
                     break;
                 case "Right":
-                    Methods.xMove += 50;
-                    //ServerThread.sendMessageText("Right/.../50");
+                    MethodsUI.xMove += 50;
+                    /*ServerThread.sendMessageText("Right/.../50");
+                    ServerThreadWebSocket.sendMessageText("Right/.../50");//*/
 
-                    Methods.plotValRe();
+                    MethodsUI.plotValRe();
                     break;
                 case "Zoom out":
-                    Methods.zoomOut(0.2);
+                    MethodsUI.zoomOut(0.2);
                     break;
                 case "Zoom in":
-                    Methods.zoomIn(0.2);
+                    MethodsUI.zoomIn(0.2);
                     break;
                 case "Restart":
-                    Methods.restart();
+                    MethodsUI.restart();
                     break;
                 default:
                     break;

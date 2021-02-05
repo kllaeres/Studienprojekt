@@ -39,27 +39,25 @@ public class UI extends JFrame{
         setTitle("Mandelbrot_Server_Java");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(6);
-
         setIconImage(new ImageIcon("picture/mandelbrot.png").getImage());
-
         setBounds(0, 0, width, height);
         setResizable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+//contentPane
         contentPane.setBackground(UIManager.getColor("blue"));
-        setContentPane(contentPane);
         contentPane.setLayout(null);
         contentPane.setFocusable(true);
-
         contentPane.addKeyListener(new KeyboardListener());
+        setContentPane(contentPane);
 
 //imgPicture
-        imgPicture = new Methods.imgPanel();
+        imgPicture = new MethodsUI.imgPanel();
         imgPicture.addMouseMotionListener(new pictureListener.pictureMouseMotionListener());
         imgPicture.addMouseListener(new pictureListener.pictureMouseListener());
         contentPane.add(imgPicture);
 
-        Methods.plotValRe();
+        MethodsUI.plotValRe();
 
 //btnRestart
         btnRestart = new JButton("Restart");

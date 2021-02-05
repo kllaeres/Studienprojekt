@@ -3,33 +3,30 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-public class Methods{
+public class MethodsUI {
     /**
      * fuer Mandelbrotmengenberechnung
      */
-    public static BufferedImage I;
+    static BufferedImage I;
     static int xMove, yMove = 0;
-    static double zoomX = 200;
-    static double zoomY = 200;
-    static double zx, zy, cx, cy, temp;
-    static int numItr = 50;
-    static int colorItr = 20;
+    private static double zoomX = 200;
+    private static double zoomY = 200;
 
     /**
      * fuer Rechteck zum hereinzoomen in einen Bereich
      */
-    static boolean rectangle = false;
-    static boolean rightClicked = false;
-    static int widthRect = 0;
-    static int heightRect = 0;
-    static int startX = 0;
-    static int startY = 0;
-    static int endX = 0;
-    static int endY = 0;
-    static int middleRectX = 0;
-    static int middleRectY = 0;
-    static int middleImageX = 0;
-    static int middleImageY = 0;
+    private static boolean rectangle = false;
+    private static boolean rightClicked = false;
+    private static int widthRect = 0;
+    private static int heightRect = 0;
+    private static int startX = 0;
+    private static int startY = 0;
+    private static int endX = 0;
+    private static int endY = 0;
+    private static int middleRectX = 0;
+    private static int middleRectY = 0;
+    private static int middleImageX = 0;
+    private static int middleImageY = 0;
 
     /**
      * plotValRe()
@@ -51,17 +48,19 @@ public class Methods{
         I = new BufferedImage(UI.imgPicture.getWidth(), UI.imgPicture.getHeight(), BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < I.getHeight(); y++) {
             for (int x = 0; x < I.getWidth(); x++) {
-                zx = zy = 0;
-                cx = (x - (I.getWidth() / 2.0) + xMove) / zoomX;
-                cy = (y - (I.getHeight() / 2.0) + yMove) / zoomY;
+                double zy;
+                double zx = zy = 0;
+                double cx = (x - (I.getWidth() / 2.0) + xMove) / zoomX;
+                double cy = (y - (I.getHeight() / 2.0) + yMove) / zoomY;
                 // jeweils Division mit 2, damit in der Mitte des Bildschirms
-                int itr = numItr;
+                int itr = 50;
                 while (zx * zx + zy * zy < 4 && itr > 0) {
-                    temp = zx * zx - zy * zy + cx;
+                    double temp = zx * zx - zy * zy + cx;
                     zy = 2 * zx * zy + cy;
                     zx = temp;
                     itr--;
                 }
+                int colorItr = 20;
                 I.setRGB(x, y, itr | (itr << colorItr));
             }
         }
@@ -114,7 +113,8 @@ public class Methods{
 
             plotValRe();
 
-            //ServerThread.sendMessageText("restart/.../");
+            /*ServerThread.sendMessageText("restart/.../");
+            ServerThreadWebSocket.sendMessageText("restart/.../");//*/
         //}
     }
 
@@ -130,12 +130,14 @@ public class Methods{
             xMove += xMove * factor;
             yMove += yMove * factor;
 
-            plotValRe();
+            plotValRe();//*/
 
             /*if(!rectangle) {
                 ServerThread.sendMessageText("zoomIn/.../" + factor);
+                ServerThreadWebSocket.sendMessageText("zoomIn/.../" + factor);
             }else{
                 ServerThread.sendMessageText("rectangle/.../" + xMove + "/.../" + yMove + "/.../" + factor);
+                ServerThreadWebSocket.sendMessageText("rectangle/.../" + xMove + "/.../" + yMove + "/.../" + factor);
             }//*/
             UI.contentPane.requestFocus();
         //}
@@ -155,7 +157,8 @@ public class Methods{
 
             plotValRe();
 
-            //ServerThread.sendMessageText("zoomOut/.../" + factor);
+            /*ServerThread.sendMessageText("zoomOut/.../" + factor);
+            ServerThreadWebSocket.sendMessageText("zoomOut/.../" + factor);//*/
             UI.contentPane.requestFocus();
         //}
     }
@@ -175,6 +178,7 @@ public class Methods{
         g.drawLine(x, y, x, y+5);
     }
 
+//fuer pictureListener
     /**
      * mouseEventDragged()
      * @param e MouseEvent
