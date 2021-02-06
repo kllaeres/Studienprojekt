@@ -33,23 +33,20 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
      */
     public static void sendMessageText(String text){
         System.out.println("text (ServerThreadWebSocket): " + text);
-        if(os != null) {
+        try {
             if (text.equals("disconnect") || text.equals("close")) {
-                try {
                     for (Socket socket : Server.listSocket) {
-                        PrintWriter os = new PrintWriter(socket.getOutputStream());
-                        MethodsServerThread.sendMessage(os, text);
+                        MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), text);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             } else {
-                MethodsServerThread.sendMessage(os, text);
+                for(Socket socket : Server.listRunning) {
+                    MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), text);
+                }
             }
-            System.out.println(text);
-        }else{
-            System.out.println("os == null");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        System.out.println(text);
     }
 
     /**
@@ -112,7 +109,6 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
 
                     line = new String(message, StandardCharsets.UTF_8);
                     b = new byte[buffLength];
-                    System.out.println("b_ende: " + Thread.currentThread().getName() + "; " + Arrays.toString(b));
                 }
 
                 if (line != null) {
@@ -233,8 +229,8 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
         if(z != -1) {
             System.out.println("Server.listSocket.remove: " + so);
             Server.listSocket.remove(so);
-            System.out.println("Server.listIP.remove: " + so.getInetAddress().getHostAddress());
-            Server.listIP.remove(so.getInetAddress().getHostAddress());
+            /*System.out.println("Server.listIP.remove: " + so.getInetAddress().getHostAddress());
+            Server.listIP.remove(so.getInetAddress().getHostAddress());//*/
             /*System.out.println("Server.listName.remove: " + Server.listName.get(z));
             Server.listName.remove(z);//*/
         }
@@ -254,7 +250,6 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
         Server.lock.lock();
         System.out.println("Server.listUnchecked.remove: " + so + "; Server.listUnchecked.size (vor remove): " + Server.listUnchecked.size());
         Server.listUnchecked.remove(so);
-        Server.lock.unlock();
         anzClients = Server.listSocket.size();
         runningClients = Server.listRunning.size();
         yourNumber--;
@@ -262,6 +257,7 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
             i--;
         }
         UI.lblAnzClients.setText("anzClients: " + anzClients);
+        Server.lock.unlock();
         if(anzClients == 0) {
             //UI.I = null;
             UI.btnRestart.setEnabled(false);

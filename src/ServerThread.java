@@ -31,23 +31,20 @@ public class ServerThread extends JFrame implements Runnable{
      */
     public static void sendMessageText(String text){
         System.out.println("text (ServerThread): " + text);
-        if(os != null) {
+        try {
             if (text.equals("disconnect") || text.equals("close")) {
-                try {
-                    for (Socket socket : Server.listSocket) {
-                        PrintWriter os = new PrintWriter(socket.getOutputStream());
-                        MethodsServerThread.sendMessage(os, text);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                for (Socket socket : Server.listSocket) {
+                    MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), text);
                 }
             } else {
-                MethodsServerThread.sendMessage(os, text);
+                for(Socket socket : Server.listRunning) {
+                    MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), text);
+                }
             }
-            System.out.println(text);
-        }else{
-            System.out.println("os == null");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        System.out.println(text);
     }
 
     /**
@@ -118,6 +115,7 @@ public class ServerThread extends JFrame implements Runnable{
                         runningClients++;
                         Server.listRunning.add(socket);
                         MethodsServerThread.sendMessage(os, "size/.../" + UI.imgPicture.getWidth() + "/.../" + UI.imgPicture.getHeight());
+                        MethodsServerThread.sendMessage(os, "anzRunning/.../" + Server.listRunning.size());
                         System.out.println("runningClients: " + runningClients);
                     }
 
@@ -184,8 +182,8 @@ public class ServerThread extends JFrame implements Runnable{
         if(z != -1) {
             System.out.println("Server.listSocket.remove: " + so);
             Server.listSocket.remove(so);
-            System.out.println("Server.listIP.remove: " + so.getInetAddress().getHostAddress());
-            Server.listIP.remove(so.getInetAddress().getHostAddress());
+            /*System.out.println("Server.listIP.remove: " + so.getInetAddress().getHostAddress());
+            Server.listIP.remove(so.getInetAddress().getHostAddress());//*/
             /*System.out.println("Server.listName.remove: " + Server.listName.get(z));
             Server.listName.remove(z);//*/
         }
@@ -193,19 +191,12 @@ public class ServerThread extends JFrame implements Runnable{
             System.out.println("Server.listRunning.remove: " + so);
             Server.listRunning.remove(so);
         }else{
-            System.out.println("listRunning.remove: no socket removed");
-        }
-        if(Server.listWebSocket.contains(so)){
-            System.out.println("Server.listWebSocket.remove: " + so);
-            Server.listWebSocket.remove(so);
-        }else{
-            System.out.println("Server.listWebSocket.remove: no socket removed");
+            System.out.println("Server.listRunning.remove: no socket removed");
         }
 
         Server.lock.lock();
         System.out.println("Server.listUnchecked.remove: " + so + "; Server.listUnchecked.size (vor remove): " + Server.listUnchecked.size());
         Server.listUnchecked.remove(so);
-        Server.lock.unlock();
         anzClients = Server.listSocket.size();
         runningClients = Server.listRunning.size();
         yourNumber--;
@@ -213,6 +204,7 @@ public class ServerThread extends JFrame implements Runnable{
             i--;
         }
         UI.lblAnzClients.setText("anzClients: " + anzClients);
+        Server.lock.unlock();
         if(anzClients == 0) {
             //UI.I = null;
             UI.btnRestart.setEnabled(false);

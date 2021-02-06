@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class UI extends JFrame{
 
@@ -43,6 +45,8 @@ public class UI extends JFrame{
         setBounds(0, 0, width, height);
         setResizable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        addWindowListener(new WindowListener());
 
 //contentPane
         contentPane.setBackground(UIManager.getColor("blue"));

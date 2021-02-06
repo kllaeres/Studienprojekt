@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
@@ -34,8 +33,8 @@ public class Server {
     public static ArrayList<Socket> listRunning = new ArrayList<>();
     public static ArrayList<Socket> listUnchecked = new ArrayList<>();
     public static ArrayList<Socket> listWebSocket = new ArrayList<>();
-    public static ArrayList<String> listIP = new ArrayList<>();
     public static ArrayList<String> listTypes = new ArrayList<>();
+    public static ArrayList<String> listIP = new ArrayList<>();
     public static ArrayList<String> listName = new ArrayList<>();
 
     /**
@@ -155,7 +154,7 @@ public class Server {
                                     String ip = clientSocket.getInetAddress().getHostAddress();
                                     Thread serverThreadWebSocket = new Thread(new ServerThreadWebSocket(clientSocket));
                                     listSocket.add(clientSocket);
-                                    listIP.add(ip);
+                                    //listIP.add(ip);
                                     serverThreadWebSocket.setName(clientType + "_" + serverThreadWebSocket.getId());
                                     System.out.println("serverThread-Name: " + serverThreadWebSocket.getName());
                                     serverThreadWebSocket.start();
@@ -169,7 +168,7 @@ public class Server {
                         String ip = clientSocket.getInetAddress().getHostAddress();
                         Thread serverThread = new Thread(new ServerThread(clientSocket));
                         listSocket.add(clientSocket);
-                        listIP.add(ip);
+                        //listIP.add(ip);
                         serverThread.setName(clientType + "_" + serverThread.getId());
                         System.out.println("serverThread-Name: " + serverThread.getName());
                         serverThread.start();
@@ -207,7 +206,7 @@ public class Server {
                 serverSocket = new ServerSocket();
                 serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), port));
             }else {
-                serverSocket = new ServerSocket(5000);
+                serverSocket = new ServerSocket(port);
             }
             serverRunning();
         }catch(IOException ioe){
