@@ -6,6 +6,11 @@ public class WindowListener extends WindowAdapter {
     public void windowClosing(WindowEvent e) {
         ServerThread.sendMessageText("disconnect");
         ServerThreadWebSocket.sendMessageText("disconnect");
-        System.out.println("closing");
+        System.out.println("Window closing");
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e) {
+        System.out.println("windowGainedFocus");
     }
 }

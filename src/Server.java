@@ -34,7 +34,6 @@ public class Server {
     public static ArrayList<Socket> listUnchecked = new ArrayList<>();
     public static ArrayList<Socket> listWebSocket = new ArrayList<>();
     public static ArrayList<String> listTypes = new ArrayList<>();
-    public static ArrayList<String> listIP = new ArrayList<>();
     public static ArrayList<String> listName = new ArrayList<>();
 
     /**
@@ -52,8 +51,8 @@ public class Server {
                 Thread.sleep(1000);
                 lock.lock();
                 for (Socket socket : listUnchecked) {
-                    MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), "check/.../Main");
-                    System.out.println("check/.../Main");
+                    MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), "check/.../Server");
+                    System.out.println("check/.../Server");
                 }
                 lock.unlock();
                 Thread.sleep(4000);
@@ -151,7 +150,7 @@ public class Server {
                                             + "\r\n\r\n").getBytes(StandardCharsets.UTF_8);
                                     out.write(response, 0, response.length);
 
-                                    String ip = clientSocket.getInetAddress().getHostAddress();
+                                    //String ip = clientSocket.getInetAddress().getHostAddress();
                                     Thread serverThreadWebSocket = new Thread(new ServerThreadWebSocket(clientSocket));
                                     listSocket.add(clientSocket);
                                     //listIP.add(ip);
@@ -165,7 +164,7 @@ public class Server {
                             nsae.printStackTrace();
                         }
                     }else {
-                        String ip = clientSocket.getInetAddress().getHostAddress();
+                        //String ip = clientSocket.getInetAddress().getHostAddress();
                         Thread serverThread = new Thread(new ServerThread(clientSocket));
                         listSocket.add(clientSocket);
                         //listIP.add(ip);
@@ -175,8 +174,8 @@ public class Server {
                     }
 
                     /*/sendCheck
-                    if(ServerThread.listSocket.size() == 1){
-                        new Thread(Main::sendCheck).start();
+                    if(Server.listSocket.size() == 1){
+                        new Thread(Server::sendCheck).start();
                     }//*/
                 }else{
                     System.out.println("clientType == null");

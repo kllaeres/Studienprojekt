@@ -42,13 +42,28 @@ public class ButtonListener implements ActionListener {
                     MethodsUI.plotValRe();
                     break;
                 case "Zoom out":
+                    MethodsUI.anzZoomsOut++;
+                    if(MethodsUI.anzZoomsIn > -9 || MethodsUI.ITR < 100){
+                        MethodsUI.anzZoomsIn--;
+                    }else{
+                        MethodsUI.anzZoomsIn = 0;
+                    }
                     MethodsUI.zoomOut(0.2);
                     break;
                 case "Zoom in":
+                    MethodsUI.anzZoomsIn++;
+                    if(MethodsUI.anzZoomsOut > -9){
+                        MethodsUI.anzZoomsOut--;
+                    }else{
+                        MethodsUI.anzZoomsOut = 0;
+                    }
                     MethodsUI.zoomIn(0.2);
                     break;
                 case "Restart":
                     MethodsUI.restart();
+                    break;
+                case "End":
+                    System.exit(0);
                     break;
                 default:
                     break;

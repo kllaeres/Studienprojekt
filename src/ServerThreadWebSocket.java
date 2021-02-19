@@ -34,7 +34,7 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
     public static void sendMessageText(String text){
         System.out.println("text (ServerThreadWebSocket): " + text);
         try {
-            if (text.equals("disconnect") || text.equals("close")) {
+            if (text.equals("disconnect") || text.equals("close") || text.equals("itr")) {
                     for (Socket socket : Server.listSocket) {
                         MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), text);
                     }
@@ -109,6 +109,7 @@ public class ServerThreadWebSocket extends JFrame implements Runnable{
 
                     line = new String(message, StandardCharsets.UTF_8);
                     b = new byte[buffLength];
+                    System.out.println("b_ende: " + Thread.currentThread().getName() + "; " + Arrays.toString(b));
                 }
 
                 if (line != null) {

@@ -11,6 +11,12 @@ public class MethodsUI {
     static int xMove, yMove = 0;
     private static double zoomX = 200;
     private static double zoomY = 200;
+    static double cx, cy = 0;
+
+    static int ITR = 500;
+    static final int startITR = ITR;
+    public static int anzZoomsIn = 0;
+    public static int anzZoomsOut = 0;
 
     /**
      * fuer Rechteck zum hereinzoomen in einen Bereich
@@ -46,14 +52,28 @@ public class MethodsUI {
      */
     private static void plotPoints(){
         I = new BufferedImage(UI.imgPicture.getWidth(), UI.imgPicture.getHeight(), BufferedImage.TYPE_INT_RGB);
+        //System.out.println("anzZoomsIn: " + anzZoomsIn + "; anzZoomsOut: " + anzZoomsOut + "; itr: " + ITR);
+        if(anzZoomsIn == 10) {
+            ITR = ITR + 50;
+            anzZoomsIn = 0;
+        }else {
+            if(anzZoomsOut == 10) {
+                if(ITR > 50) {
+                    ITR = Math.max(ITR - 50, 50);
+                }
+                anzZoomsOut = 0;
+            }
+        }
+        UI.txtAnzItr.setText("" + ITR);
         for (int y = 0; y < I.getHeight(); y++) {
             for (int x = 0; x < I.getWidth(); x++) {
                 double zy;
                 double zx = zy = 0;
-                double cx = (x - (I.getWidth() / 2.0) + xMove) / zoomX;
-                double cy = (y - (I.getHeight() / 2.0) + yMove) / zoomY;
+                cx = (x - (I.getWidth() / 2.0) + xMove) / zoomX;
+                cy = (y - (I.getHeight() / 2.0) + yMove) / zoomY;
                 // jeweils Division mit 2, damit in der Mitte des Bildschirms
-                int itr = 50;
+                //int itr = KeyboardListener.itr;
+                int itr = ITR;
                 while (zx * zx + zy * zy < 4 && itr > 0) {
                     double temp = zx * zx - zy * zy + cx;
                     zy = 2 * zx * zy + cy;
@@ -67,10 +87,10 @@ public class MethodsUI {
         // zeichnet Kreuz ueber das Bild (Testzwecke)
         middleImageX = I.getWidth() / 2;
         middleImageY = I.getHeight() / 2;
-        Graphics2D g2 = (Graphics2D) I.getGraphics();
-        g2.setColor(Color.WHITE);
-        g2.drawLine(middleImageX, 0, middleImageX, I.getHeight());
-        g2.drawLine(0, middleImageY, I.getWidth(), middleImageY);
+        Graphics2D g = (Graphics2D) I.getGraphics();
+        g.setColor(Color.WHITE);
+        g.drawLine(middleImageX, 0, middleImageX, I.getHeight());
+        g.drawLine(0, middleImageY, I.getWidth(), middleImageY);
     }
 
     /**
@@ -78,10 +98,8 @@ public class MethodsUI {
      * stellt die Mandelbrotmenge dar
      */
     public static class imgPanel extends JPanel {
-        int imgWidth = UI.width-20;
-        int imgHeight = (int) ((UI.height / 1.1) - (int) (UI.height / 25.6));
         public imgPanel(){
-            setBounds(10, 10, imgWidth, imgHeight);
+            setBounds(10, 10, UI.paneWidth, UI.imgPictureHeight);
         }
 
         @Override
@@ -96,6 +114,8 @@ public class MethodsUI {
      */
     public static void restart(){
         //if(ServerThread.runningClients > 0) {
+            anzZoomsOut = anzZoomsIn = 0;
+            ITR = 500;
             zoomX = 200;
             zoomY = 200;
             xMove = 0;
@@ -110,6 +130,7 @@ public class MethodsUI {
             middleRectY = 0;
             middleImageX = 0;
             middleImageY = 0;
+            rightClicked = false;
 
             plotValRe();
 
@@ -126,6 +147,26 @@ public class MethodsUI {
         //if(ServerThread.runningClients > 0) {
             zoomX *= (1 + factor);
             zoomY *= (1 + factor);
+
+            /*int zoom = (int) Math.round(factor/0.2);
+            System.out.println("zoom: " + zoom);
+            if(zoom >= 10){
+                System.out.println("zoom/10: " + (zoom / 10));
+                ITR = Math.min(ITR + (50 * (zoom / 10)), 10000);
+                anzZoomsIn = anzZoomsIn + (zoom - (10 * (zoom / 10)));
+                anzZoomsOut = anzZoomsOut - anzZoomsIn;
+            }else{
+                anzZoomsIn = anzZoomsIn + zoom;
+                if(anzZoomsOut > -9){
+                    anzZoomsOut--;
+                }else{
+                    anzZoomsOut = 0;
+                }
+                if(anzZoomsIn == 10){
+                    ITR = ITR + 50;
+                    anzZoomsIn = 0;
+                }
+            }//*/
 
             xMove += xMove * factor;
             yMove += yMove * factor;
@@ -165,8 +206,8 @@ public class MethodsUI {
 
     /**
      * drawX()
-     * @param x int
-     * @param y int
+     * @param x x-Koordinate (int)
+     * @param y y-Koordinate (int)
      */
     private static void drawX(int x, int y){
         Graphics g = UI.imgPicture.getGraphics();
@@ -176,6 +217,48 @@ public class MethodsUI {
         g.drawLine(x, y, x+5, y);
         g.drawLine(x, y, x, y-5);
         g.drawLine(x, y, x, y+5);
+    }
+
+    /**
+     * drawRectangle()
+     * zeichnet Rechteck
+     */
+    private static void drawRectangle(){
+        // Mitte des Rechtecks
+        middleRectX = (startX + endX) / 2;
+        middleRectY = (startY + endY) / 2;
+
+        // Mitte des Bildes
+        middleImageX = I.getWidth() / 2;
+        middleImageY = I.getHeight() / 2;
+
+        Graphics2D g2 = (Graphics2D) UI.imgPicture.getGraphics();
+        g2.setColor(Color.WHITE);
+
+        // Ueberpruefung, damit das Rechteck richtig gezeichnet wird
+        if (startX > endX) {
+            widthRect = startX - endX;
+            if (startY > endY) {
+                heightRect = startY - endY;
+                g2.drawRect(endX, endY, widthRect, heightRect);
+            } else {
+                heightRect = endY - startY;
+                g2.drawRect(endX, startY, widthRect, heightRect);
+            }
+        } else {
+            widthRect = endX - startX;
+            if (startY > endY) {
+                heightRect = startY - endY;
+                g2.drawRect(startX, endY, widthRect, heightRect);
+            } else {
+                heightRect = endY - startY;
+                g2.drawRect(startX, startY, widthRect, heightRect);
+            }
+        }
+
+        //Mittelpunkt des Rechtecks wird mit einem Kreuz dargestellt
+        drawX(middleRectX, middleRectY);
+        UI.imgPicture.repaint();
     }
 
 //fuer pictureListener
@@ -188,41 +271,7 @@ public class MethodsUI {
             endX = e.getX();
             endY = e.getY();
 
-            // Mitte des Rechtecks
-            middleRectX = (startX + endX) / 2;
-            middleRectY = (startY + endY) / 2;
-
-            // Mitte des Bildes
-            middleImageX = I.getWidth() / 2;
-            middleImageY = I.getHeight() / 2;
-
-            Graphics2D g2 = (Graphics2D) UI.imgPicture.getGraphics();
-            g2.setColor(Color.WHITE);
-
-            // Ueberpruefung, damit das Rechteck richtig gezeichnet wird
-            if (startX > endX) {
-                widthRect = startX - endX;
-                if (startY > endY) {
-                    heightRect = startY - endY;
-                    g2.drawRect(endX, endY, widthRect, heightRect);
-                } else {
-                    heightRect = endY - startY;
-                    g2.drawRect(endX, startY, widthRect, heightRect);
-                }
-            } else {
-                widthRect = endX - startX;
-                if (startY > endY) {
-                    heightRect = startY - endY;
-                    g2.drawRect(startX, endY, widthRect, heightRect);
-                } else {
-                    heightRect = endY - startY;
-                    g2.drawRect(startX, startY, widthRect, heightRect);
-                }
-            }
-
-            //Mittelpunkt des Rechtecks wird mit einem Kreuz dargestellt
-            drawX(middleRectX, middleRectY);
-            UI.imgPicture.repaint();
+            drawRectangle();
         }
     }
 

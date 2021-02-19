@@ -13,8 +13,6 @@ public class ServerThread extends JFrame implements Runnable{
     private static int runningClients;
     private static int yourNumber;
 
-    private static int i = 0;
-
     /**
      * ServerThread()
      * @param s Socket
@@ -32,7 +30,7 @@ public class ServerThread extends JFrame implements Runnable{
     public static void sendMessageText(String text){
         System.out.println("text (ServerThread): " + text);
         try {
-            if (text.equals("disconnect") || text.equals("close")) {
+            if (text.equals("disconnect") || text.equals("close") || text.equals("itr")) {
                 for (Socket socket : Server.listSocket) {
                     MethodsServerThread.sendMessage(new PrintWriter(socket.getOutputStream()), text);
                 }
@@ -71,7 +69,7 @@ public class ServerThread extends JFrame implements Runnable{
                     if (stringBytes[0].equals("connect")) {
                         MethodsServerThread.sendMessage(os, "connect response from the server");
                         anzClients = Server.listSocket.size();
-                        yourNumber = Server.listSocket.size();
+                        //yourNumber = Server.listSocket.size();
                         UI.lblAnzClients.setText("anzClients: " + anzClients);
                         System.out.println("anzClients: " + anzClients);
                         if(anzClients == 1) {
@@ -88,7 +86,7 @@ public class ServerThread extends JFrame implements Runnable{
                             PrintWriter os = new PrintWriter(socket.getOutputStream());
                             MethodsServerThread.sendMessage(os, "anzClients/.../" + anzClients);
                         }
-                        MethodsServerThread.sendMessage(os, "yourNumber/.../" + yourNumber);
+                        //MethodsServerThread.sendMessage(os, "yourNumber/.../" + yourNumber);
 
                         /*if(listName.contains(stringBytes[1])){
                             i++;
@@ -106,6 +104,7 @@ public class ServerThread extends JFrame implements Runnable{
                         int y = Integer.parseInt(stringBytes[2]);
                         int itr = Integer.parseInt(stringBytes[3]);
                         int colorItr = 20;
+                        //int colorItr = (int) (MethodsUI.ITR / 2.5);
                         MethodsUI.I.setRGB(x, y, itr | (itr << colorItr));
                         validate();
                         repaint();
@@ -113,9 +112,11 @@ public class ServerThread extends JFrame implements Runnable{
 
                     if (stringBytes[0].equals("start")){
                         runningClients++;
+                        yourNumber++;
                         Server.listRunning.add(socket);
-                        MethodsServerThread.sendMessage(os, "size/.../" + UI.imgPicture.getWidth() + "/.../" + UI.imgPicture.getHeight());
-                        MethodsServerThread.sendMessage(os, "anzRunning/.../" + Server.listRunning.size());
+                        MethodsServerThread.sendMessage(os, "size/.../" + UI.imgPicture.getWidth() + "/.../" + UI.imgPicture.getHeight() + "/.../" + MethodsUI.ITR);
+                        MethodsServerThread.sendMessage(os, "anzRunning/.../" + Server.listRunning.size() + "/.../" + yourNumber);
+                        //MethodsServerThread.sendMessage(os, "yourNumber/.../" + yourNumber);
                         System.out.println("runningClients: " + runningClients);
                     }
 
@@ -197,12 +198,11 @@ public class ServerThread extends JFrame implements Runnable{
         Server.lock.lock();
         System.out.println("Server.listUnchecked.remove: " + so + "; Server.listUnchecked.size (vor remove): " + Server.listUnchecked.size());
         Server.listUnchecked.remove(so);
+        System.out.println("anzClients (vorher): " + anzClients);
         anzClients = Server.listSocket.size();
+        System.out.println("anzClients (nachher): " + anzClients);
         runningClients = Server.listRunning.size();
         yourNumber--;
-        if(i > 0) {
-            i--;
-        }
         UI.lblAnzClients.setText("anzClients: " + anzClients);
         Server.lock.unlock();
         if(anzClients == 0) {
@@ -215,7 +215,6 @@ public class ServerThread extends JFrame implements Runnable{
             UI.btnUp.setEnabled(false);
             UI.btnDown.setEnabled(false);
             //UI.btnEnd.setEnabled(false);
-            i = 0;
             try {
                 br.close();
                 System.out.println("BufferedReader closed: " + br.toString());
