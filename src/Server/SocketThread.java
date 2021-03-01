@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.ByteOrder;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import Benchmarks.PixelBenchmark;
@@ -24,11 +22,6 @@ public class SocketThread implements Runnable {
 
 	private PixelBenchmark bm = new PixelBenchmark();
 	private PixelBenchmark fm = new PixelBenchmark();
-
-	private String clientType;
-	public void setClientType(String clientType) {
-		this.clientType = clientType;
-	}
 
 	private Thread thread;
 	private Task task;
@@ -64,16 +57,6 @@ public class SocketThread implements Runnable {
 
 	private void sendMessage(byte[] task) throws IOException {
 		dout.write(task);
-		dout.flush();
-	}
-
-	private void sendMessage(int task) throws IOException {
-		dout.writeInt(task);
-		dout.flush();
-	}
-
-	private void sendMessage(double task) throws IOException {
-		dout.writeDouble(task);
 		dout.flush();
 	}
 
@@ -156,69 +139,22 @@ public class SocketThread implements Runnable {
 
 		task = server.getTask();
 
-		if(!clientType.equals("Android")) {
-			if (task == null) {
-				sendMessage("noTask\0");
-				return;
-			}
-
-			sendMessage("task\0");
-			receiveMessage();
-			sendMessage(task.getY());
-			receiveMessage();
-			sendMessage(task.getxMove());
-			receiveMessage();
-			sendMessage(task.getyMove());
-			receiveMessage();
-			sendMessage(task.getZoom());
-			receiveMessage();
-			sendMessage(task.getItr());
-		}else{
-			if (task == null) {
-				sendMessage("noTask");
-				return;
-			}
-
-			sendMessage("task");
-
-			receiveMessage();
-
-			int y = java.nio.ByteBuffer.wrap(task.getY()).order((ByteOrder.LITTLE_ENDIAN)).getInt();
-			//System.out.println("getY: " + y);
-			sendMessage(y);
-
-			receiveMessage();
-
-			double xMove = java.nio.ByteBuffer.wrap(task.getxMove()).order((ByteOrder.LITTLE_ENDIAN)).getDouble();
-			//System.out.println("getxMove: " + xMove);
-			sendMessage(xMove);
-
-			receiveMessage();
-
-			double yMove = java.nio.ByteBuffer.wrap(task.getyMove()).order((ByteOrder.LITTLE_ENDIAN)).getDouble();
-			//System.out.println("getyMove: " + yMove);
-			sendMessage(yMove);
-
-			receiveMessage();
-
-			double zoom = java.nio.ByteBuffer.wrap(task.getZoom()).order((ByteOrder.LITTLE_ENDIAN)).getDouble();
-			//System.out.println("getZoom: " + zoom);
-			sendMessage(zoom);
-
-			receiveMessage();
-
-			int itr = java.nio.ByteBuffer.wrap(task.getItr()).order((ByteOrder.LITTLE_ENDIAN)).getInt();
-			//System.out.println("getItr: " + itr);
-			sendMessage(itr);
-
-			//receiveMessage();
-
-			/*System.out.println("vor");
-			receiveMessage();
-			System.out.println("nach");//*/
-			//sendMessage("\nend Task");//*/
+		if (task == null) {
+			sendMessage("noTask\0");
+			return;
 		}
 
+		sendMessage("task\0");
+		receiveMessage();
+		sendMessage(task.getY());
+		receiveMessage();
+		sendMessage(task.getxMove());
+		receiveMessage();
+		sendMessage(task.getyMove());
+		receiveMessage();
+		sendMessage(task.getZoom());
+		receiveMessage();
+		sendMessage(task.getItr());
 	}
 
 	private void plot(String compare) throws IOException {

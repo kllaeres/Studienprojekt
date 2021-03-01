@@ -231,8 +231,6 @@ public class Server {
 		client_sockets.put(name, clientSocket);
 		socketThread.start();
 
-		socketThread.setClientType(connectionThread.getClientType());
-
 	}
 
 	/*

@@ -22,10 +22,6 @@ public class ConnectionThread implements Runnable {
 	private Thread thread;
 	private boolean running = true;
 
-	public String getClientType() {
-		return clientType;
-	}
-
 	private String clientType;
 	private String data;
 	private OutputStream out;
