@@ -47,23 +47,12 @@ public class ConnectionThread implements Runnable {
 				server.createWebSocketThread(clientSocket, "Test " + System.nanoTime());
 				break;
 			case "Android":
-				//server.createSocketThread(clientSocket, "Test " +  + System.nanoTime());
 				server.createAndroidSocketThread(clientSocket, "Test " +  + System.nanoTime());
 				break;
 			case "Cuda":
 				server.createSocketThread(clientSocket, "Test " + System.nanoTime());
 				break;
 		}
-		/*if (clientType.equals("WebSocket")){
-			server.createWebSocketThread(clientSocket, "Test " + System.nanoTime());
-		}
-		else{
-			if(clientType.equals("Android")){
-				server.createAndroidSocketThread(clientSocket, "Test " +  + System.nanoTime());
-			}else {
-				server.createSocketThread(clientSocket, "Test" + System.nanoTime());
-			}
-		}//*/
 	}
 
 	private void getClientType(Socket clientSocket) throws NoSuchAlgorithmException, IOException {

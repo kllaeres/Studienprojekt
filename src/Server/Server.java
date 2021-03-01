@@ -235,7 +235,7 @@ public class Server {
 
 	/*
 	 * package private method used by "connectionThread". Initiates and starts a
-	 * "SocketThread" object, which is added to "client_sockets"
+	 * "AndroidSocketThread" object, which is added to "client_sockets"
 	 */
 	void createAndroidSocketThread(Socket clientSocket, String name) {
 
@@ -248,7 +248,7 @@ public class Server {
 
 	/*
 	 * package private method used by "connectionThread". Initiates and starts a
-	 * "WebsocketThread" object, which is added to "client_websockets"
+	 * "WebSocketThread" object, which is added to "client_websockets"
 	 */
 	void createWebSocketThread(Socket clientSocket, String name) {
 
