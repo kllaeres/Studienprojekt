@@ -118,12 +118,7 @@ public class SocketThread implements Runnable {
 	}
 
 	private void connect() {
-		connected = true;
-		System.out.println("Size: " + server.getMANDELBROT_PANEL_WIDTH() + "x" + server.getMANDELBROT_PANEL_HEIGHT());
-		int width = server.getMANDELBROT_PANEL_WIDTH();
-		int height = server.getMANDELBROT_PANEL_HEIGHT();
-		sendMessage("Connect success/.../" + width + "/.../" + height);
-		//sendMessage("Connect success\n\0");
+		sendMessage("Connect success\n\0");
 		server.connect();
 	}
 

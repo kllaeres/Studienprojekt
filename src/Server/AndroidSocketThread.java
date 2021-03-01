@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.ByteOrder;
 import java.util.StringTokenizer;
-import java.util.concurrent.RunnableFuture;
 
 import Benchmarks.PixelBenchmark;
 import Mandelbrot.Task;

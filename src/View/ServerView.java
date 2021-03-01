@@ -80,13 +80,6 @@ public class ServerView extends JFrame {
 	private int MANDELBROT_PANEL_WIDTH;
 	private int MANDELBROT_PANEL_HEIGHT;
 
-	public int getMANDELBROT_PANEL_WIDTH() {
-		return MANDELBROT_PANEL_WIDTH;
-	}
-	public int getMANDELBROT_PANEL_HEIGHT() {
-		return MANDELBROT_PANEL_HEIGHT;
-	}
-
 	/*
 	 * "buttonPanel" size (depends on mandelbrot resolution)
 	 */
@@ -118,24 +111,16 @@ public class ServerView extends JFrame {
 	/*
 	 * Determines how big a GridBagLayout cell is (panel_width / grid_width =
 	 * cell_width) (panel_height / grid_height = cell_height)
-	 * 
 	 */
 	private final int GRID_WIDTH = 100;
 	private final int GRID_HEIGHT = 100;
 
-	/*
-	 * sets the variables
-	 */
-	private void setVariables(int width, int height){
-
-		MANDELBROT_PANEL_WIDTH = width;
-		MANDELBROT_PANEL_HEIGHT = height;
-
-		FRAME_WIDTH = width + MONITOR_PANEL_WIDTH;
-		FRAME_HEIGHT = height + BUTTON_PANEL_HEIGHT;
-
-		BUTTON_PANEL_WIDTH = width;
-		MONITOR_PANEL_HEIGHT = height;
+	/******** Getter ********/
+	public int getMANDELBROT_PANEL_WIDTH() {
+		return MANDELBROT_PANEL_WIDTH;
+	}
+	public int getMANDELBROT_PANEL_HEIGHT() {
+		return MANDELBROT_PANEL_HEIGHT;
 	}
 
 	/**
@@ -153,10 +138,23 @@ public class ServerView extends JFrame {
 		addButtonPanel();
 		addMonitorPanel();
 
-		//setState(ICONIFIED); // startet minimiert
-
 		pack();
 
+	}
+
+	/*
+	 * sets the variables
+	 */
+	private void setVariables(int width, int height){
+
+		MANDELBROT_PANEL_WIDTH = width;
+		MANDELBROT_PANEL_HEIGHT = height;
+
+		FRAME_WIDTH = width + MONITOR_PANEL_WIDTH;
+		FRAME_HEIGHT = height + BUTTON_PANEL_HEIGHT;
+
+		BUTTON_PANEL_WIDTH = width;
+		MONITOR_PANEL_HEIGHT = height;
 	}
 
 	/*

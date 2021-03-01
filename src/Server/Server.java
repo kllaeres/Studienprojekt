@@ -1,10 +1,7 @@
 package Server;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.HashMap;
 
 import javax.swing.*;
@@ -41,11 +38,10 @@ public class Server {
 	/* Number of clients */
 	private volatile int connected;
 
-
+	/******** Getter ********/
 	public int getMANDELBROT_PANEL_WIDTH() {
 		return userInterface.getMANDELBROT_PANEL_WIDTH();
 	}
-
 	public int getMANDELBROT_PANEL_HEIGHT() {
 		return userInterface.getMANDELBROT_PANEL_HEIGHT();
 	}
@@ -143,10 +139,8 @@ public class Server {
 		myPanel.add(new JLabel("Height:"));
 		myPanel.add(heightField);
 
-		/*int result = JOptionPane.showOptionDialog(null, myPanel, "Enter Resolution (no input: 1000x1000)", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE,null, new Object[]{"Confirm", "Cancel"}, null);//*/
 		int result = JOptionPane.showConfirmDialog(null, myPanel,
-				"Enter Resolution (no input: 1000x1000)", JOptionPane.OK_CANCEL_OPTION);//*/
+				"Enter Resolution (no input: 1000x1000)", JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION) {
 			try {
 				if (widthField.getText().equals("")) {
@@ -226,7 +220,6 @@ public class Server {
 	 */
 	void createSocketThread(Socket clientSocket, String name) {
 
-		//SocketThread socketThread = new SocketThread(clientSocket, this);
 		SocketThread socketThread = new SocketThread(clientSocket, this);
 		client_sockets.put(name, clientSocket);
 		socketThread.start();
@@ -239,7 +232,6 @@ public class Server {
 	 */
 	void createAndroidSocketThread(Socket clientSocket, String name) {
 
-		//SocketThread socketThread = new SocketThread(clientSocket, this);
 		AndroidSocketThread androidSocketThread = new AndroidSocketThread(clientSocket, this);
 		client_sockets.put(name, clientSocket);
 		androidSocketThread.start();
