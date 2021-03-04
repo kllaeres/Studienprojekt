@@ -34,9 +34,6 @@ public class MandelbrotMouseListener extends MouseAdapter {
 	private int rectWidth;
 	private int rectHeight;
 
-	private int widthRect;
-	private int heightRect;
-
 	public MandelbrotMouseListener(Server server, MandelbrotPanel mandelbrotPanel) {
 		this.server = server;
 		this.mandelbrotPanel = mandelbrotPanel;
@@ -76,27 +73,6 @@ public class MandelbrotMouseListener extends MouseAdapter {
 			middleRectX = (startX + endX) / 2;
 			middleRectY = (startY + endY) / 2;
 
-			// Ueberpruefung, damit das Rechteck richtig gezeichnet wird
-			/*if (startX > endX) {
-				widthRect = startX - endX;
-				if (startY > endY) {
-					heightRect = startY - endY;
-					mandelbrotPanel.setRectangle(endX, endY, widthRect, heightRect);
-				} else {
-					heightRect = endY - startY;
-					mandelbrotPanel.setRectangle(endX, startY, widthRect, heightRect);
-				}
-			} else {
-				widthRect = endX - startX;
-				if (startY > endY) {
-					heightRect = startY - endY;
-					mandelbrotPanel.setRectangle(startX, endY, widthRect, heightRect);
-				} else {
-					heightRect = endY - startY;
-					mandelbrotPanel.setRectangle(startX, startY, widthRect, heightRect);
-				}
-			}//*/
-
 			// Mittelpunkt des Rechtecks wird mit einem Kreuz dargestellt
 			mandelbrotPanel.setRectangle(rectX, rectY, rectWidth, rectHeight);
 			mandelbrotPanel.setRectangleX(middleRectX, middleRectY);
@@ -117,8 +93,8 @@ public class MandelbrotMouseListener extends MouseAdapter {
 			server.moveX(factorX);
 			server.moveY(factorY);
 
-			server.zoomIn(((mWidth / (widthRect * 1.0)) + (mHeight / (heightRect * 1.0))) / 2.0);
-		
+			server.zoomIn(((mWidth / (rectWidth * 1.0)) + (mHeight / (rectHeight * 1.0))) / 2.0);
+
 		}
 	}
 

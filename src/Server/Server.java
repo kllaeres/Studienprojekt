@@ -313,6 +313,14 @@ public class Server {
 		userInterface.setNumberOfClients(connected);
 	}
 
+	void setPackagesPerSecond(int packages) {
+		userInterface.setPackagesPerSecond(packages);
+	}
+
+	void setFPS(double d) {
+		userInterface.setFPS(d);
+	}
+
 	/*----------------------------------------------------------------*/
 
 	/*-Getter-Methods-------------------------------------------------*/

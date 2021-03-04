@@ -50,8 +50,8 @@ public class MonitorPanel extends JPanel {
 		number_of_clients.setText(String.format("Clients: %d", number));
 	}
 
-	public void setFPS(int number) {
-		frames_per_second.setText(String.format("FPS: %d", number));
+	public void setFPS(double number) {
+		frames_per_second.setText(String.format("FPS: %f", number));
 	}
 
 	public void setPackagesPerSecond(int number) {

@@ -259,6 +259,14 @@ public class ServerView extends JFrame {
 		monitorPanel.setNumberOfClients(number);
 	}
 
+	public void setPackagesPerSecond(int packages) {
+		monitorPanel.setPackagesPerSecond(packages);
+	}
+
+	public void setFPS(double d) {
+		monitorPanel.setFPS(d);
+	}
+
 	public int getMandelbrotWidth() {
 		return MANDELBROT_PANEL_WIDTH;
 	}

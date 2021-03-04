@@ -79,10 +79,6 @@ public class SocketThread implements Runnable {
 				token = new StringTokenizer(input, "/.../");
 				compare = token.nextElement().toString();
 
-				System.out.println("input: " + input);
-				//System.out.println("compare: " + compare);
-				//System.out.println("clientType: " + clientType);
-
 				switch (compare) {
 				case "connect":
 					connect();
@@ -161,7 +157,6 @@ public class SocketThread implements Runnable {
 		itr = Integer.parseInt(reader.readLine());
 		
 		server.setRGB(x, y, itr);
-		System.out.println("x: " + x + "; y: " + y + "; itr: " + itr);
 		bm.stop();
 	}
 
