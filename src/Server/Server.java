@@ -45,6 +45,9 @@ public class Server {
 	public int getMANDELBROT_PANEL_HEIGHT() {
 		return userInterface.getMANDELBROT_PANEL_HEIGHT();
 	}
+	public int getConnected() {
+		return connected;
+	}
 
 	/**
 	 * Constructor of {@code Server}
@@ -88,6 +91,7 @@ public class Server {
 	 */
 	private void initializeServerSocket() {
 		try {
+			//TODO anpassen
 			serverSocket = new ServerSocket(port);
 			//serverSocket = new ServerSocket();
 			//serverSocket.bind(new InetSocketAddress(host, port));
@@ -145,6 +149,7 @@ public class Server {
 			try {
 				if (widthField.getText().equals("")) {
 					System.out.println("Width value (no input): 1000");
+					//TODO anpassen
 					resolution[0] = 500;
 				} else {
 					resolution[0] = Integer.parseInt(widthField.getText());
@@ -152,6 +157,7 @@ public class Server {
 				}
 				if (heightField.getText().equals("")) {
 					System.out.println("Height value (no input): 1000");
+					//TODO anpassen
 					resolution[1] = 500;
 				} else {
 					resolution[1] = Integer.parseInt(heightField.getText());
@@ -253,12 +259,16 @@ public class Server {
 	/*---Interaction-methods-called-by-classes-of-package-"Listener"--*/
 
 	public void moveX(double factor) {
-		taskbuilder.moveX(factor);
+		if(getConnected() > 0) {
+			taskbuilder.moveX(factor);
+		}
 //		image.transformX(factor);
 	}
 
 	public void moveY(double factor) {
-		taskbuilder.moveY(factor);
+		if(getConnected() > 0){
+			taskbuilder.moveY(factor);
+		}
 //		image.transformY(factor);
 	}
 
@@ -267,14 +277,18 @@ public class Server {
 //			image.transformZoomIn(factor);
 //		}
 
-		taskbuilder.zoomIn(factor);
+		if(getConnected() > 0) {
+			taskbuilder.zoomIn(factor);
+		}
 	}
 
 	public void zoomOut(double factor) {
 //		if (!taskbuilder.zoomOut(factor)) {
 //			image.transformZoomOut(factor);
 //		}
-		taskbuilder.zoomOut(factor);
+		if(getConnected() > 0){
+			taskbuilder.zoomOut(factor);
+		}
 	}
 
 	public void defaultImage() {

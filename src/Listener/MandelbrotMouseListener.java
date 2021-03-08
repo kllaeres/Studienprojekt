@@ -43,7 +43,7 @@ public class MandelbrotMouseListener extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
+		if (e.getButton() == MouseEvent.BUTTON1 && server.getConnected() > 0) {
 			startX = e.getX();
 			startY = e.getY();
 			canceled = false;
@@ -59,7 +59,7 @@ public class MandelbrotMouseListener extends MouseAdapter {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 
-		if (!canceled) {
+		if (!canceled && server.getConnected() > 0) {
 			endX = e.getX();
 			endY = e.getY();
 
@@ -82,7 +82,7 @@ public class MandelbrotMouseListener extends MouseAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (!canceled) {
+		if (!canceled && server.getConnected() > 0) {
 			
 			mandelbrotPanel.setRectangle(0, 0, 0, 0);
 			mandelbrotPanel.setRectangleX(0, 0);
@@ -100,13 +100,14 @@ public class MandelbrotMouseListener extends MouseAdapter {
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
+		if(server.getConnected() > 0) {
 
-		double mouseRotation = e.getPreciseWheelRotation();
+			double mouseRotation = e.getPreciseWheelRotation();
 
-		if (mouseRotation < 0)
-			server.zoomIn(mouseRotation * -0.2);
-		else
-			server.zoomOut(mouseRotation * 0.2);
-
+			if (mouseRotation < 0)
+				server.zoomIn(mouseRotation * -0.2);
+			else
+				server.zoomOut(mouseRotation * 0.2);
+		}
 	}
 }

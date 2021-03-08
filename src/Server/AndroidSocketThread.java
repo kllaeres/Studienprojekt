@@ -3,7 +3,6 @@ package Server;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import Benchmarks.PixelBenchmark;
@@ -83,9 +82,6 @@ public class AndroidSocketThread implements Runnable {
                 token = new StringTokenizer(input, "/.../");
                 compare = token.nextElement().toString();
 
-                //System.out.println("input: " + input);
-                //System.out.println("compare: " + compare);
-
                 switch (compare) {
                     case "connect":
                         connect();
@@ -105,9 +101,7 @@ public class AndroidSocketThread implements Runnable {
                     case "s":
                         return;
                     default:
-                        //System.out.println("plot---------------------------------------------------------plot");
                         plot(input);
-                        //System.out.println("plot---------------------------------------------------------plot");
                 }
             }
 
@@ -183,6 +177,7 @@ public class AndroidSocketThread implements Runnable {
         y = Integer.parseInt(bufferedReader.readLine());
         itr = Integer.parseInt(bufferedReader.readLine());
 
+        //System.out.println("x: " + x + ", y: " + y + "; itr: " + itr);
         server.setRGB(x, y, itr);
         bm.stop();
     }
