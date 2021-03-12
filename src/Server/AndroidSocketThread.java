@@ -23,15 +23,19 @@ public class AndroidSocketThread implements Runnable {
     private final Thread thread;
     private Task task;
 
+    private final int anzThreadsClient;
+
     private boolean disconnected;
     private boolean connected;
 
-    public AndroidSocketThread(Socket socket, Server server) {
+    public AndroidSocketThread(Socket socket, Server server, int anzThreadsClient) {
         System.out.println("AndroidSocket");
 
         this.socket = socket;
         this.server = server;
         this.thread = new Thread(this);
+
+        this.anzThreadsClient = anzThreadsClient;
 
         connected = false;
         disconnected = false;
@@ -79,7 +83,7 @@ public class AndroidSocketThread implements Runnable {
 
                 bm.start();
                 fm.start();
-                token = new StringTokenizer(input, "/.../");
+                token = new StringTokenizer(input, "/.");
                 compare = token.nextElement().toString();
 
                 switch (compare) {
@@ -135,6 +139,10 @@ public class AndroidSocketThread implements Runnable {
     private void sendTask() throws IOException {
 
         task = server.getTask();
+
+        for(int i = 0; i < (anzThreadsClient - 1); i++){
+            server.getTask();
+        }
 
         if (task == null) {
             sendMessage("noTask");

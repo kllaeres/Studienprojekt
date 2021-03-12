@@ -22,6 +22,8 @@ public class ConnectionThread implements Runnable {
 	private Thread thread;
 	private boolean running = true;
 
+	private int anzThreadsClient;
+
 	private String clientType;
 	private String data;
 	private OutputStream out;
@@ -47,7 +49,7 @@ public class ConnectionThread implements Runnable {
 				server.createWebSocketThread(clientSocket, "Test " + System.nanoTime());
 				break;
 			case "Android":
-				server.createAndroidSocketThread(clientSocket, "Test " +  + System.nanoTime());
+				server.createAndroidSocketThread(clientSocket, "Test " +  + System.nanoTime(), anzThreadsClient);
 				break;
 			case "Cuda":
 				server.createSocketThread(clientSocket, "Test " + System.nanoTime());
@@ -70,6 +72,10 @@ public class ConnectionThread implements Runnable {
 
 			if (tmp.equals("type")) {
 				clientType = tokenizer.nextToken();
+				if(clientType.equals("Android")){
+					anzThreadsClient = Integer.parseInt(tokenizer.nextToken());
+					System.out.println("anzThreadsClient: " + anzThreadsClient);
+				}
 			} else {
 				clientType = "WebSocket";
 				data = tmp + scan.useDelimiter("\\r\\n\\r\\n").next();

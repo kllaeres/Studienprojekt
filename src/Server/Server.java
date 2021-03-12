@@ -133,8 +133,8 @@ public class Server {
 	 */
 	private int[] setResolution(){
 		int[] resolution = {0, 0};
-		JTextField widthField = new JTextField("500");
-		JTextField heightField = new JTextField("500");
+		JTextField widthField = new JTextField( "500", 5);
+		JTextField heightField = new JTextField("500", 5);
 
 		JPanel myPanel = new JPanel();
 		myPanel.add(new JLabel("Width:"));
@@ -222,9 +222,9 @@ public class Server {
 	 * package private method used by "connectionThread". Initiates and starts a
 	 * "AndroidSocketThread" object, which is added to "client_sockets"
 	 */
-	void createAndroidSocketThread(Socket clientSocket, String name) {
+	void createAndroidSocketThread(Socket clientSocket, String name, int anzThreadsClient) {
 
-		AndroidSocketThread androidSocketThread = new AndroidSocketThread(clientSocket, this);
+		AndroidSocketThread androidSocketThread = new AndroidSocketThread(clientSocket, this, anzThreadsClient);
 		client_sockets.put(name, clientSocket);
 		androidSocketThread.start();
 

@@ -98,7 +98,6 @@ public class SocketThread implements Runnable {
 				case "s":
 					return;
 				default:
-					System.out.println("plot---------------------------------------------------------");
 					plot(input);
 				}
 			}
