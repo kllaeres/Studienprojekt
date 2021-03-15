@@ -22,8 +22,6 @@ public class ConnectionThread implements Runnable {
 	private Thread thread;
 	private boolean running = true;
 
-	private int anzThreadsClient;
-
 	private String clientType;
 	private String data;
 	private OutputStream out;
@@ -72,10 +70,6 @@ public class ConnectionThread implements Runnable {
 
 			if (tmp.equals("type")) {
 				clientType = tokenizer.nextToken();
-				if(clientType.equals("Android")){
-					anzThreadsClient = Integer.parseInt(tokenizer.nextToken());
-					System.out.println("anzThreadsClient: " + anzThreadsClient);
-				}
 			} else {
 				clientType = "WebSocket";
 				data = tmp + scan.useDelimiter("\\r\\n\\r\\n").next();
