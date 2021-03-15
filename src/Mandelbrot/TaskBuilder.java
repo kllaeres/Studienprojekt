@@ -3,6 +3,8 @@ package src.Mandelbrot;
 import src.Panels.MandelbrotPanel;
 import src.Server.Server;
 
+import java.util.ArrayList;
+
 public class TaskBuilder {
 
 	private final Server server;
@@ -11,8 +13,7 @@ public class TaskBuilder {
 
 	private final MandelbrotPanel mandelbrotPanel;
 
-	private Task[] tasks;
-	private int pos;
+	private ArrayList<Task> taskList = new ArrayList<>();
 	private boolean calculated;
 	private double xMove;
 	private double yMove;
@@ -24,12 +25,17 @@ public class TaskBuilder {
 	private int itr;
 	private int zoomDepth;
 
+	public synchronized void addToTaskList(Task task){
+		System.out.println("vor: " + taskList.size());
+		taskList.add(task);
+		System.out.println("nach: " + taskList.size());
+	}
+
 	public TaskBuilder(Server server, int imageWidth, int imageHeight) {
 		this.server = server;
 		this.imageWidth = imageWidth;
 		this.imageHeight = imageHeight;
 		this.calculated = false;
-		this.tasks = new Task[imageHeight];
 		this.mandelbrotPanel = server.getServerView().getMandelbrotPanel();
 		setDefaultValues();
 		createNewTasks();
@@ -37,7 +43,6 @@ public class TaskBuilder {
 
 	private void setDefaultValues() {
 		mandelbrotPanel.requestFocus();
-		pos = 0;
 		xMove = 0;
 		yMove = 0;
 		zoom = 200;
@@ -150,10 +155,10 @@ public class TaskBuilder {
 	}
 
 	private void createNewTasks() {
+		taskList.clear();
 		calculated = false;
-		pos = 0;
 		for (int i = 0; i < imageHeight; i++) {
-			tasks[i] = new Task(i, xMove, yMove, zoom, itr);
+			taskList.add(new Task(i, xMove, yMove, zoom, itr));
 		}
 	}
 
@@ -167,11 +172,13 @@ public class TaskBuilder {
 
 	public synchronized Task getTask() {
 
-		if (pos < imageHeight && calculated == false)
-			return tasks[pos++];
+		if (taskList.size() > 0 && !calculated) {
+			Task task = taskList.get(0);
+			taskList.remove(task);
+			return task;
+		}
 
 		calculated = true;
-		pos = 0;
 
 		return null;
 	}

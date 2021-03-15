@@ -345,5 +345,9 @@ public class Server {
 		return taskbuilder.getTask();
 	}
 
+	synchronized void addToTaskList(Task task){
+		taskbuilder.addToTaskList(task);
+	}
+
 	/*----------------------------------------------------------------*/
 }

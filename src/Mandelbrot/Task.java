@@ -1,8 +1,5 @@
 package src.Mandelbrot;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
 public class Task {
 
 	int y;

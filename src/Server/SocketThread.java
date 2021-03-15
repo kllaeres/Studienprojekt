@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.StringTokenizer;
 
 import src.Benchmarks.PixelBenchmark;
@@ -15,6 +17,8 @@ public class SocketThread implements Runnable {
 
 	private Socket socket;
 	private Server server;
+
+	private byte[] y_bytes, xMove_bytes, yMove_bytes, zoom_bytes, itr_bytes;
 
 	private BufferedReader reader;
 	private PrintWriter writer;
@@ -134,17 +138,22 @@ public class SocketThread implements Runnable {
 			return;
 		}
 
-		/*sendMessage("task\0");
+		sendMessage("task\0");
 		receiveMessage();
-		sendMessage(task.getY());
+		y_bytes = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(task.getY()).array();
+		sendMessage(y_bytes);
 		receiveMessage();
-		sendMessage(task.getxMove());
+		xMove_bytes = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putDouble(task.getxMove()).array();
+		sendMessage(xMove_bytes);
 		receiveMessage();
-		sendMessage(task.getyMove());
+		yMove_bytes = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putDouble(task.getyMove()).array();
+		sendMessage(yMove_bytes);
 		receiveMessage();
-		sendMessage(task.getZoom());
+		zoom_bytes = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putDouble(task.getZoom()).array();
+		sendMessage(zoom_bytes);
 		receiveMessage();
-		sendMessage(task.getItr());//*/
+		itr_bytes = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(task.getItr()).array();
+		sendMessage(itr_bytes);
 	}
 
 	private void plot(String compare) throws IOException {
