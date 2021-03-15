@@ -1,4 +1,4 @@
-package Server;
+package src.Server;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,8 +8,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import Benchmarks.PixelBenchmark;
-import Mandelbrot.Task;
+import src.Benchmarks.PixelBenchmark;
+import src.Mandelbrot.Task;
 
 public class SocketThread implements Runnable {
 
@@ -134,7 +134,7 @@ public class SocketThread implements Runnable {
 			return;
 		}
 
-		sendMessage("task\0");
+		/*sendMessage("task\0");
 		receiveMessage();
 		sendMessage(task.getY());
 		receiveMessage();
@@ -144,7 +144,7 @@ public class SocketThread implements Runnable {
 		receiveMessage();
 		sendMessage(task.getZoom());
 		receiveMessage();
-		sendMessage(task.getItr());
+		sendMessage(task.getItr());//*/
 	}
 
 	private void plot(String compare) throws IOException {

@@ -1,4 +1,4 @@
-package Server;
+package src.Server;
 
 import java.io.IOException;
 import java.net.*;
@@ -6,12 +6,13 @@ import java.util.HashMap;
 
 import javax.swing.*;
 
-import Mandelbrot.MandelbrotImage;
-import Mandelbrot.Task;
-import Mandelbrot.TaskBuilder;
-import View.ServerView;
+import src.Mandelbrot.MandelbrotImage;
+import src.Mandelbrot.Task;
+import src.Mandelbrot.TaskBuilder;
+import src.View.ServerView;
 
 public class Server {
+	private JLabel number_iterations;
 
 	/* Used to build TCP connection */
 	
@@ -47,6 +48,17 @@ public class Server {
 	}
 	public int getConnected() {
 		return connected;
+	}
+	public JLabel getNumberIterations(){
+		return number_iterations;
+	}
+	public ServerView getServerView(){
+		return userInterface;
+	}
+
+	/******** Setter ********/
+	public void setNumberIterations(JLabel number_iterations){
+		this.number_iterations = number_iterations;
 	}
 
 	/**
@@ -202,7 +214,7 @@ public class Server {
 
 		int width = userInterface.getMandelbrotWidth();
 		int height = userInterface.getMandelbrotHeight();
-		taskbuilder = new TaskBuilder(width, height);
+		taskbuilder = new TaskBuilder(this, width, height);
 
 	}
 
@@ -222,9 +234,9 @@ public class Server {
 	 * package private method used by "connectionThread". Initiates and starts a
 	 * "AndroidSocketThread" object, which is added to "client_sockets"
 	 */
-	void createAndroidSocketThread(Socket clientSocket, String name, int anzThreadsClient) {
+	void createAndroidSocketThread(Socket clientSocket, String name) {
 
-		AndroidSocketThread androidSocketThread = new AndroidSocketThread(clientSocket, this, anzThreadsClient);
+		AndroidSocketThread androidSocketThread = new AndroidSocketThread(clientSocket, this);
 		client_sockets.put(name, clientSocket);
 		androidSocketThread.start();
 

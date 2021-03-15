@@ -1,4 +1,4 @@
-package Server;
+package src.Server;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,8 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-import Benchmarks.PixelBenchmark;
-import Mandelbrot.Task;
+import src.Benchmarks.PixelBenchmark;
+import src.Mandelbrot.Task;
 
 
 public class WebsocketThread implements Runnable {
@@ -288,19 +288,20 @@ public class WebsocketThread implements Runnable {
             return;
         }
         sendMessage("task");
-        int getY =  ByteBuffer.wrap(task.getY()).order(ByteOrder.LITTLE_ENDIAN).getInt();
-        sendMessage(String.valueOf(getY));
+        //int getY =  ByteBuffer.wrap(task.getY()).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        sendMessage(String.valueOf(task.getY()));
         receiveMessage();
-        double xMove =  ByteBuffer.wrap(task.getxMove()).order(ByteOrder.LITTLE_ENDIAN).getDouble();
-        sendMessage(String.valueOf(xMove));
+        //double xMove =  ByteBuffer.wrap(task.getxMove()).order(ByteOrder.LITTLE_ENDIAN).getDouble();
+        sendMessage(String.valueOf(task.getxMove()));
         receiveMessage();
-        double yMove = ByteBuffer.wrap(task.getyMove()).order(ByteOrder.LITTLE_ENDIAN).getDouble();
-        sendMessage(String.valueOf(yMove));
+        //double yMove = ByteBuffer.wrap(task.getyMove()).order(ByteOrder.LITTLE_ENDIAN).getDouble();
+        sendMessage(String.valueOf(task.getyMove()));
         receiveMessage();
-        double zoom = ByteBuffer.wrap(task.getZoom()).order(ByteOrder.LITTLE_ENDIAN).getDouble();
-        sendMessage(String.valueOf(zoom));
+        //double zoom = ByteBuffer.wrap(task.getZoom()).order(ByteOrder.LITTLE_ENDIAN).getDouble();
+        sendMessage(String.valueOf(task.getZoom()));
         receiveMessage();
-        int itr = ByteBuffer.wrap(task.getItr()).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        //int itr = ByteBuffer.wrap(task.getItr()).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        int itr = task.getItr();
         System.out.println("Iterationen: "+ itr);
         sendMessage(String.valueOf(itr));
 

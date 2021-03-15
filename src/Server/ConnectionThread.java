@@ -1,4 +1,4 @@
-package Server;
+package src.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class ConnectionThread implements Runnable {
 				server.createWebSocketThread(clientSocket, "Test " + System.nanoTime());
 				break;
 			case "Android":
-				server.createAndroidSocketThread(clientSocket, "Test " +  + System.nanoTime(), anzThreadsClient);
+				server.createAndroidSocketThread(clientSocket, "Test " +  + System.nanoTime());
 				break;
 			case "Cuda":
 				server.createSocketThread(clientSocket, "Test " + System.nanoTime());

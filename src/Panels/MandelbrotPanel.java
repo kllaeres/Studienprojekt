@@ -1,4 +1,4 @@
-package Panels;
+package src.Panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import Listener.KeyboardListener;
-import Listener.MandelbrotMouseListener;
+import src.Listener.KeyboardListener;
+import src.Listener.MandelbrotMouseListener;
 
 public class MandelbrotPanel extends JPanel {
 

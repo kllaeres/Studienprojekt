@@ -1,4 +1,4 @@
-package Mandelbrot;
+package src.Mandelbrot;
 
 import java.awt.image.BufferedImage;
 

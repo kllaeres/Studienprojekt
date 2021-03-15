@@ -1,9 +1,9 @@
-package Listener;
+package src.Listener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import Server.Server;
+import src.Server.Server;
 
 public class WindowListener extends WindowAdapter {
 

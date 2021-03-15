@@ -1,19 +1,19 @@
-package View;
+package src.View;
 
 import java.awt.Component;
 
 import javax.swing.*;
 
-import Listener.ButtonListener;
-import Listener.KeyboardListener;
-import Listener.MandelbrotMouseListener;
-import Listener.WindowListener;
-import Mandelbrot.MandelbrotImage;
-import Panels.ButtonPanel;
-import Panels.ContentPanel;
-import Panels.MandelbrotPanel;
-import Panels.MonitorPanel;
-import Server.Server;;
+import src.Listener.ButtonListener;
+import src.Listener.KeyboardListener;
+import src.Listener.MandelbrotMouseListener;
+import src.Listener.WindowListener;
+import src.Mandelbrot.MandelbrotImage;
+import src.Panels.ButtonPanel;
+import src.Panels.ContentPanel;
+import src.Panels.MandelbrotPanel;
+import src.Panels.MonitorPanel;
+import src.Server.Server;
 
 /**
  * The class <code>ServerView</code> inherits from <code>JFrame</code>. It
@@ -122,6 +122,9 @@ public class ServerView extends JFrame {
 	public int getMANDELBROT_PANEL_HEIGHT() {
 		return MANDELBROT_PANEL_HEIGHT;
 	}
+	public MandelbrotPanel getMandelbrotPanel(){
+		return mandelbrotPanel;
+	}
 
 	/**
 	 * Creates a new ServerView.
@@ -165,7 +168,7 @@ public class ServerView extends JFrame {
 		contentPanel = new ContentPanel(FRAME_WIDTH, FRAME_HEIGHT);
 		mandelbrotPanel = new MandelbrotPanel(MANDELBROT_PANEL_WIDTH, MANDELBROT_PANEL_HEIGHT);
 		buttonPanel = new ButtonPanel(BUTTON_PANEL_WIDTH, BUTTON_PANEL_HEIGHT);
-		monitorPanel = new MonitorPanel(MONITOR_PANEL_WIDTH, MONITOR_PANEL_HEIGHT);
+		monitorPanel = new MonitorPanel(server, MONITOR_PANEL_WIDTH, MONITOR_PANEL_HEIGHT);
 
 		buttonListener = new ButtonListener(server);
 		keyboardListener = new KeyboardListener(server);
