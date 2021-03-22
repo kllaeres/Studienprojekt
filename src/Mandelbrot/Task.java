@@ -22,11 +22,11 @@ public class Task {
 		return y;
 	}
 
-	public double getxMove() {
+	public double getXMove() {
 		return xMove;
 	}
 
-	public double getyMove() {
+	public double getYMove() {
 		return yMove;
 	}
 
