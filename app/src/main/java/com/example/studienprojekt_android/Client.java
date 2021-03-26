@@ -36,7 +36,7 @@ public class Client {
     /**
      * run()
      */
-    public void run() { // test
+    public void run() {
         try {
             InetAddress serverAdr = InetAddress.getByName(ip);
             socket = new Socket(serverAdr, port);
