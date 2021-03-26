@@ -1,4 +1,4 @@
-package com.example.studienprojekt_android; //test
+package com.example.studienprojekt_android;
 
 import android.app.ActivityManager;
 import android.content.Context;
