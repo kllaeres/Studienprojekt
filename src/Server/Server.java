@@ -34,28 +34,6 @@ public class Server {
 	/* Number of clients */
 	private volatile int connected;
 
-	/******** Getter ********/
-	public int getMANDELBROT_PANEL_WIDTH() {
-		return userInterface.getMANDELBROT_PANEL_WIDTH();
-	}
-	public int getMANDELBROT_PANEL_HEIGHT() {
-		return userInterface.getMANDELBROT_PANEL_HEIGHT();
-	}
-	public int getConnected() {
-		return connected;
-	}
-	public JLabel getNumberIterations(){
-		return number_iterations;
-	}
-	public ServerView getServerView(){
-		return userInterface;
-	}
-
-	/******** Setter ********/
-	public void setNumberIterations(JLabel number_iterations){
-		this.number_iterations = number_iterations;
-	}
-
 	/**
 	 * Constructor of {@code Server}
 	 * 
@@ -131,7 +109,7 @@ public class Server {
 	 * Starts "connectionThread", which accepts incoming client connection requests
 	 */
 	private void initializeConnectionThread() {
-		connectionThread = new ConnectionThread(serverSocket, this);
+		connectionThread = new ConnectionThread(serverSocket, this, userInterface);
 		connectionThread.start();
 	}
 
@@ -155,9 +133,8 @@ public class Server {
 		if (result == JOptionPane.OK_OPTION) {
 			try {
 				resolution[0] = Integer.parseInt(widthField.getText());
-				System.out.println("Width value: " + resolution[0]);
 				resolution[1] = Integer.parseInt(heightField.getText());
-				System.out.println("Height value: " + resolution[1]);
+				System.out.println("Size (WxH): " + resolution[0] + "x" + resolution[1]);
 				if(resolution[0] <= 0 || resolution[1] <= 0){
 					JOptionPane.showOptionDialog(null, "Width (" + resolution[0] + ") and height (" + resolution[1] + ") \ncannot be <= 0", "ERROR",
 							JOptionPane.YES_NO_OPTION,
@@ -165,7 +142,7 @@ public class Server {
 							new String[]{"OK"}, null);
 				}
 			}catch(NumberFormatException e){
-				JOptionPane.showOptionDialog(null, "Wrong input for resolution", "ERROR",
+				JOptionPane.showOptionDialog(null, "Wrong/no input for resolution", "ERROR",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.ERROR_MESSAGE, null,
 						new String[]{"OK"}, null);
@@ -241,7 +218,7 @@ public class Server {
 	 */
 	void createWebSocketThread(Socket clientSocket, String name) {
 
-		WebSocketThread websocketThread = new WebSocketThread(clientSocket, this, name);
+		WebsocketThread websocketThread = new WebsocketThread(clientSocket, this, name);
 		websocketThread.start();
 
 	}
@@ -300,10 +277,22 @@ public class Server {
 		userInterface.setNumberOfClients(connected);
 	}
 
-	void disconnect() {
+	void disconnect(String type) {
 
 		if (--connected == 0)
 			userInterface.disableButtons();
+
+		switch (type) {
+			case "Android":
+				userInterface.setNumberOfAndroidClients(-1);
+				break;
+			case "Cuda":
+				userInterface.setNumberOfCudaClients(-1);
+				break;
+			case "WebSocket":
+				userInterface.setNumberOfWebSocketClients(-1);
+				break;
+		}
 
 		userInterface.setNumberOfClients(connected);
 	}
@@ -314,6 +303,29 @@ public class Server {
 
 	synchronized Task getTask() {
 		return taskbuilder.getTask();
+	}
+	public int getMandelbrotWidth() {
+		return userInterface.getMandelbrotWidth();
+	}
+	public int getMandelbrotHeight() {
+		return userInterface.getMandelbrotHeight();
+	}
+	public int getConnected() {
+		return connected;
+	}
+	public JLabel getNumberIterations(){
+		return number_iterations;
+	}
+	public ServerView getServerView(){
+		return userInterface;
+	}
+
+	/*----------------------------------------------------------------*/
+
+	/*-Setter-Methods-------------------------------------------------*/
+
+	public void setNumberIterations(JLabel number_iterations){
+		this.number_iterations = number_iterations;
 	}
 
 	/*----------------------------------------------------------------*/

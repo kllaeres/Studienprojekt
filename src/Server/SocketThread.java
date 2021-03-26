@@ -92,6 +92,12 @@ public class SocketThread implements Runnable {
 				case "frame":
 					server.setImage();
 					break;
+				case "width":
+					sendWidth();
+					break;
+				case "height":
+					sendHeight();
+					break;
 				case "s":
 					return;
 				default:
@@ -102,6 +108,14 @@ public class SocketThread implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void sendHeight() throws IOException {
+		sendMessage(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(server.getMandelbrotHeight()).array());
+	}
+
+	private void sendWidth() throws IOException {
+		sendMessage(ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(server.getMandelbrotWidth()).array());
 	}
 
 	public void start() {
@@ -122,7 +136,7 @@ public class SocketThread implements Runnable {
 			}
 			disconnected = true;
 			close();
-			server.disconnect();
+			server.disconnect("Cuda");
 		}
 	}
 
@@ -157,10 +171,11 @@ public class SocketThread implements Runnable {
 		int x;
 		int y;
 		int itr;
-		x = Integer.parseInt(compare);
+		x = Integer.parseInt(compare.trim());
 		y = Integer.parseInt(reader.readLine());
 		itr = Integer.parseInt(reader.readLine());
-		
+
+		//System.out.println("x: " + x + "; y: " + y + "; itr: " + itr);
 		server.setRGB(x, y, itr);
 	}
 
