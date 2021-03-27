@@ -105,6 +105,7 @@ public class WebsocketThread implements Runnable {
     }
 
     private void sendMessage(String text) {
+        if(!text.equals("noTask")) System.out.println("WebsocketThread-" + thread.getId() + ": " + text);
         try {
 
             byte[] rawData = text.getBytes();
