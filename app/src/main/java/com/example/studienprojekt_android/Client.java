@@ -21,7 +21,7 @@ public class Client {
     /************** Getter **************/
     public Socket getSocket() {
         return socket;
-    } //
+    }
 
     /**
      * Constructor of {@code Client}
