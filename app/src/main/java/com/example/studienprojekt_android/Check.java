@@ -116,11 +116,6 @@ public class Check implements Runnable{
         double send = Math.round(((txBytes - transmitted)/1024.0) * 100.0) / 100.0;
         double read = Math.round(((rxBytes - received)/1024.0) * 100.0) / 100.0;
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            uid = Os.getuid();
-            TrafficStats.setThreadStatsUid(uid);
-            TrafficStats.clearThreadStatsUid();
-        }//*/
         received = rxBytes;
         transmitted = txBytes;
 

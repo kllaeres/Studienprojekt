@@ -159,16 +159,12 @@ public class FirstFragment extends Fragment {
      */
     private void deleteButton(){
         btnDelete.setOnClickListener(v ->{
-            String strIp1 = "192";      // ""
-            String strIp2 = "168";      // ""
-            String strIp3 = "178";      // ""
-            String strIp4 = "45";       // ""
-            String strPort = "5000";    // ""
+            String strPort = "5000";
             editDeviceName.setText("");
-            editIP_1.setText(strIp1);
-            editIP_2.setText(strIp2);
-            editIP_3.setText(strIp3);
-            editIP_4.setText(strIp4);
+            editIP_1.setText("");
+            editIP_2.setText("");
+            editIP_3.setText("");
+            editIP_4.setText("");
             editPort.setText(strPort);
             Toast toast = Toast.makeText(getActivity(), "Delete", Toast.LENGTH_SHORT);
             toast.show();

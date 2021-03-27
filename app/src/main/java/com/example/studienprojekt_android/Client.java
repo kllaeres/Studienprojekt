@@ -1,5 +1,7 @@
 package com.example.studienprojekt_android;
 
+import android.util.Log;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -43,7 +45,7 @@ public class Client {
             connect.setConnected(true);
         } catch (Exception e) {
             connect.setConnected(false);
-            e.printStackTrace();
+            Log.e("Socket_Error", "" + e);
         }
     }
 
@@ -108,8 +110,8 @@ public class Client {
         if (mBufferOut != null) {
             mBufferOut.flush();
             mBufferOut.close();
+            mBufferOut = null;
         }
-        //mBufferOut = null;
         try {
             socket.close();
         }catch(IOException e){

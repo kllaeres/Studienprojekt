@@ -1,10 +1,6 @@
 
 #include <jni.h>
 #include <string>
-#include <android/log.h>    // debugging
-
-#define  LOG_TAG    "PlotClass"
-#define  ALOG(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 
 #ifndef STUDIENPROJEKT_ANDROID_PlotClass_H
 #define STUDIENPROJEKT_ANDROID_PlotClass_H
