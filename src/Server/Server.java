@@ -76,10 +76,8 @@ public class Server {
 	 */
 	private void initializeServerSocket() {
 		try {
-			//TODO anpassen
-			serverSocket = new ServerSocket(port);
-			//serverSocket = new ServerSocket();
-			//serverSocket.bind(new InetSocketAddress(host, port));
+			serverSocket = new ServerSocket();
+			serverSocket.bind(new InetSocketAddress(host, port));
 		} catch (IOException ioe) {
 			System.out.println("Server error");
 			ioe.printStackTrace();
