@@ -158,7 +158,6 @@ public class AndroidSocketThread implements Runnable {
         y = Integer.parseInt(bufferedReader.readLine());
         itr = Integer.parseInt(bufferedReader.readLine());
 
-        //System.out.println("x: " + x + ", y: " + y + "; itr: " + itr);
         server.setRGB(x, y, itr);
     }
 
